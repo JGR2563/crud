@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema CRUD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Contenedor de alertas -->
+    <div id="alerts-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-shop"></i> Sistema CRUD
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showView('products')">
+                            <i class="bi bi-box-seam"></i> Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showView('customers')">
+                            <i class="bi bi-people"></i> Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showView('suppliers')">
+                            <i class="bi bi-truck"></i> Proveedores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showView('sales')">
+                            <i class="bi bi-cart"></i> Ventas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showView('reservations')">
+                            <i class="bi bi-calendar"></i> Reservas
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="container-fluid mt-4">
+        <!-- Vista de Productos -->
+        <div id="products-view" class="view">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2><i class="bi bi-box-seam"></i> Productos</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newProductModal">
+                    <i class="bi bi-plus"></i> Nuevo Producto
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vista de Clientes -->
+        <div id="customers-view" class="view" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2><i class="bi bi-people"></i> Clientes</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCustomerModal">
+                    <i class="bi bi-plus"></i> Nuevo Cliente
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Preferencial</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vista de Proveedores -->
+        <div id="suppliers-view" class="view" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2><i class="bi bi-truck"></i> Proveedores</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newSupplierModal">
+                    <i class="bi bi-plus"></i> Nuevo Proveedor
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Dirección</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="suppliers-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vista de Ventas -->
+        <div id="sales-view" class="view" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2><i class="bi bi-cart"></i> Ventas</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newSaleModal">
+                    <i class="bi bi-plus"></i> Nueva Venta
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vista de Reservas -->
+        <div id="reservations-view" class="view" style="display: none;">
+            <div class="alert alert-info">
+                <h4><i class="bi bi-info-circle"></i> Próximamente</h4>
+                <p>La funcionalidad de reservas estará disponible en futuras actualizaciones.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
